@@ -12,4 +12,6 @@ import retrofit2.http.Query;
 public interface GsbApi {
     @POST("connexion")
     Call<Visiteur> login(@Body Visiteur visiteur);
+        @GET("visiteur")
+        Call<Visiteur> getVisiteur(@Query("email") String email, @Query("mdp") String mdp);
 }

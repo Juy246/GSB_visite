@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public final class RetrofitClientInstance {
     private static Retrofit retrofit;
-    private static final String BASE_URL = "url";
+    private static final String BASE_URL = "http://apigsb-env.eba-fvnapujm.us-east-1.elasticbeanstalk.com/api/";
 
     private RetrofitClientInstance() {}
 
