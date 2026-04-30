@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="visiteur@test.com"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -43,8 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:hint="@string/hint_password"
-            >
+            android:hint="@string/hint_password">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
@@ -60,6 +59,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btn_login" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            android:indeterminate="true" />
 
     </LinearLayout>
 

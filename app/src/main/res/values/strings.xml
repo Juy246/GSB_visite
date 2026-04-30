@@ -6,4 +6,14 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Mot de passe</string>
     <string name="btn_login">Se connecter</string>
+
+    <!-- Messages d'erreur -->
+    <string name="error_email_required">Email requis</string>
+    <string name="error_email_invalid">Email invalide</string>
+    <string name="error_password_required">Mot de passe requis</string>
+    <string name="error_invalid_credentials">Identifiants invalides</string>
+    <string name="error_login_failed">Erreur lors de la connexion</string>
+
+    <!-- Messages utilisateur -->
+    <string name="bonjour">Bonjour %s</string>
 </resources>

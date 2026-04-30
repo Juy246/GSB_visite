@@ -27,7 +27,7 @@ public class LoginFragment extends Fragment {
     private VisiteurViewModel visiteurViewModel;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -39,20 +39,52 @@ public class LoginFragment extends Fragment {
 
         visiteurViewModel = new ViewModelProvider(requireActivity()).get(VisiteurViewModel.class);
 
-        binding.btnLogin.setOnClickListener(v -> {
-            String email    = binding.etEmail.getText().toString().trim();
-            String password = binding.etPassword.getText().toString().trim();
+        binding.btnLogin.setOnClickListener(v -> performLogin());
+    }
 
-            visiteurViewModel.login(email, password).observe(getViewLifecycleOwner(), success -> {
-                if (success) {
-                    String token = visiteurViewModel.getVisiteur().getValue().getToken();
-                    Toast.makeText(getContext(), "Connecté ! Token : " + token, Toast.LENGTH_SHORT).show();
-                    NavDirections action = LoginFragmentDirections.actionLoginFragmentToHomeVisiteurFragment();
-                    NavHostFragment.findNavController(LoginFragment.this).navigate(action);
-                } else {
-                    Toast.makeText(getContext(), "Identifiants invalides", Toast.LENGTH_SHORT).show();
-                }
-            });
+    private void performLogin() {
+        CharSequence emailText = binding.etEmail.getText();
+        CharSequence passwordText = binding.etPassword.getText();
+        
+        String email = emailText != null ? emailText.toString().trim() : "";
+        String password = passwordText != null ? passwordText.toString().trim() : "";
+
+        if (email.isEmpty()) {
+            binding.tilEmail.setError(getString(R.string.error_email_required));
+            return;
+        }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.tilEmail.setError(getString(R.string.error_email_invalid));
+            return;
+        }
+        if (password.isEmpty()) {
+            binding.tilPassword.setError(getString(R.string.error_password_required));
+            return;
+        }
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.btnLogin.setEnabled(false);
+
+        visiteurViewModel.login(email, password).observe(getViewLifecycleOwner(), success -> {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.btnLogin.setEnabled(true);
+
+            if (success) {
+                visiteurViewModel.getVisiteur().observe(getViewLifecycleOwner(), visiteur -> {
+                    if (visiteur != null && visiteur.getToken() != null) {
+                        Toast.makeText(getContext(), 
+                            "Connecté ! Bienvenue " + visiteur.getEmail(), 
+                            Toast.LENGTH_SHORT).show();
+
+                        NavDirections action = LoginFragmentDirections.actionLoginFragmentToHomeVisiteurFragment();
+                        NavHostFragment.findNavController(LoginFragment.this).navigate(action);
+                    }
+                });
+            } else {
+                Toast.makeText(getContext(), 
+                    getString(R.string.error_login_failed), 
+                    Toast.LENGTH_SHORT).show();
+                binding.tilPassword.setError(getString(R.string.error_invalid_credentials));
+            }
         });
     }
 }

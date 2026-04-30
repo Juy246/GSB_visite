@@ -1,29 +1,60 @@
 package com.example.gsb_visites.data.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class Visiteur implements Serializable {
 
     private String email;
-    private String mdp;
+    @SerializedName("password")
+    private String password;
     private String token;
+    private String nom;
+    private String prenom;
 
-    public Visiteur(String email, String mdp) {
+    public Visiteur() {}
+    public Visiteur(String email, String password) {
         this.email = email;
-        this.mdp = mdp;
+        this.password = password;
     }
     public String getEmail() {
         return email;
     }
-    public String getMdp() {
-        return mdp;
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getToken() {
         return token;
     }
+
     public void setToken(String token) {
         this.token = token;
     }
 
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
 }
