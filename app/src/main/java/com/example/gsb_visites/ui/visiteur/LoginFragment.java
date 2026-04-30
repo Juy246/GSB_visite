@@ -71,8 +71,8 @@ public class LoginFragment extends Fragment {
             if (success) {
                 visiteurViewModel.getVisiteur().observe(getViewLifecycleOwner(), visiteur -> {
                     if (visiteur != null && visiteur.getToken() != null) {
-                        Toast.makeText(getContext(), 
-                            "Connecté ! Bienvenue " + visiteur.getEmail(), 
+                        Toast.makeText(getContext(),
+                            "Connecté ! Bienvenue " + visiteur.getEmail(),
                             Toast.LENGTH_SHORT).show();
 
                         NavDirections action = LoginFragmentDirections.actionLoginFragmentToHomeVisiteurFragment();
@@ -80,8 +80,8 @@ public class LoginFragment extends Fragment {
                     }
                 });
             } else {
-                Toast.makeText(getContext(), 
-                    getString(R.string.error_login_failed), 
+                Toast.makeText(getContext(),
+                    getString(R.string.error_login_failed),
                     Toast.LENGTH_SHORT).show();
                 binding.tilPassword.setError(getString(R.string.error_invalid_credentials));
             }

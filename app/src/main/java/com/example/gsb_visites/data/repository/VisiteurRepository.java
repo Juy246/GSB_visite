@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.gsb_visites.data.model.ApiResponse;
+import com.example.gsb_visites.data.model.Portefeuille;
 import com.example.gsb_visites.data.model.Visiteur;
 import com.example.gsb_visites.data.network.GsbApi;
 
@@ -14,6 +15,8 @@ import javax.inject.Singleton;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 @Singleton
 public class VisiteurRepository {
@@ -25,8 +28,38 @@ public class VisiteurRepository {
         this.gsbApi = gsbApi;
     }
 
-    public LiveData<Visiteur> getVisiteurById() {
+    public LiveData<Visiteur> getVisiteur() {
         return visiteurLiveData;
+    }
+
+    /**
+     * Récupère les infos du visiteur (nom, prenom, email)
+     * @param email email du visiteur
+     * @param password mot de passe du visiteur
+     * @return LiveData<Visiteur> contenant les infos du visiteur
+     */
+    public LiveData<Visiteur> fetchVisiteurInfo(String email, String password) {
+        MutableLiveData<Visiteur> result = new MutableLiveData<>();
+
+        Call<Visiteur> call = gsbApi.getVisiteur(email, password);
+        call.enqueue(new Callback<Visiteur>() {
+            @Override
+            public void onResponse(@NonNull Call<Visiteur> call, @NonNull Response<Visiteur> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Visiteur visiteur = response.body();
+                    visiteurLiveData.setValue(visiteur);
+                    result.setValue(visiteur);
+                } else {
+                    result.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Visiteur> call, @NonNull Throwable t) {
+                result.setValue(null);
+            }
+        });
+        return result;
     }
 
     /**
@@ -66,6 +99,33 @@ public class VisiteurRepository {
             }
         });
         return success;
+    }
+
+    /**
+     * Récupère les portefeuilles actifs d'un visiteur
+     * @param visiteurId ID du visiteur
+     * @return LiveData<List<Portefeuille>> contenant les portefeuilles actifs
+     */
+    public LiveData<List<Portefeuille>> getActivePortefeuilleByVisiteur(String visiteurId) {
+        MutableLiveData<List<Portefeuille>> result = new MutableLiveData<>();
+
+        Call<List<Portefeuille>> call = gsbApi.getActivePortefeuilleByVisiteur(visiteurId);
+        call.enqueue(new Callback<List<Portefeuille>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Portefeuille>> call, @NonNull Response<List<Portefeuille>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    result.setValue(response.body());
+                } else {
+                    result.setValue(new ArrayList<>());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Portefeuille>> call, @NonNull Throwable t) {
+                result.setValue(new ArrayList<>());
+            }
+        });
+        return result;
     }
 
     public void logout() {

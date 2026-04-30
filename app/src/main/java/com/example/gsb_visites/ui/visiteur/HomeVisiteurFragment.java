@@ -34,7 +34,7 @@ public class HomeVisiteurFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         VisiteurViewModel visiteurViewModel = new ViewModelProvider(requireActivity()).get(VisiteurViewModel.class);
-        visiteurViewModel.getVisiteurById().observe(getViewLifecycleOwner(), visiteur -> {
+        visiteurViewModel.getVisiteur().observe(getViewLifecycleOwner(), visiteur -> {
             if (visiteur != null) {
                 String nom = visiteur.getNom() != null ? visiteur.getNom() : "";
                 String prenom = visiteur.getPrenom() != null ? visiteur.getPrenom() : "";
@@ -45,5 +45,11 @@ public class HomeVisiteurFragment extends Fragment {
                 binding.tvEmail.setText(emailMessage);
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

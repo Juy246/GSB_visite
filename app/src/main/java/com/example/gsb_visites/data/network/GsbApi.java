@@ -1,13 +1,16 @@
 package com.example.gsb_visites.data.network;
 
 import com.example.gsb_visites.data.model.ApiResponse;
+import com.example.gsb_visites.data.model.Portefeuille;
 import com.example.gsb_visites.data.model.Visiteur;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
+import java.util.List;
 
 public interface GsbApi {
     /**
@@ -23,4 +26,10 @@ public interface GsbApi {
      */
     @GET("visiteur")
     Call<Visiteur> getVisiteur(@Query("email") String email, @Query("password") String password);
+
+    /**
+     * GET /api/visiteurs/:id/portefeuille/actif - Récupérer les portefeuilles actifs d'un visiteur
+     */
+    @GET("visiteurs/{id}/portefeuille/actif")
+    Call<List<Portefeuille>> getActivePortefeuilleByVisiteur(@Path("id") String visiteurId);
 }
