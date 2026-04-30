@@ -25,7 +25,7 @@ public class VisiteurRepository {
         this.gsbApi = gsbApi;
     }
 
-    public LiveData<Visiteur> getVisiteur() {
+    public LiveData<Visiteur> getVisiteurById() {
         return visiteurLiveData;
     }
 

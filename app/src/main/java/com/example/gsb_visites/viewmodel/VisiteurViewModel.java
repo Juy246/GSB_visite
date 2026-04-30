@@ -23,8 +23,8 @@ public class VisiteurViewModel extends ViewModel {
         return visiteurRepository.login(email, password);
     }
 
-    public LiveData<Visiteur> getVisiteur() {
-        return visiteurRepository.getVisiteur();
+    public LiveData<Visiteur> getVisiteurById() {
+        return visiteurRepository.getVisiteurById();
     }
 
     public void logout() {

@@ -28,6 +28,16 @@
         android:paddingBottom="16dp"
         tools:text="Bonjour" />
 
+    <!-- Email du visiteur -->
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="14sp"
+        android:paddingBottom="12dp"
+        tools:text="Votre adresse e-mail : visiteur@test.com" />
+
     <!-- RecyclerView Praticiens -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPraticien"
