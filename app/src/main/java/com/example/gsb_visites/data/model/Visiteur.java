@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 public class Visiteur implements Serializable {
 
+    @SerializedName("_id")
+    private String id;
     private String email;
     @SerializedName("password")
     private String password;
@@ -56,5 +58,13 @@ public class Visiteur implements Serializable {
 
     public void setPrenom(String prenom) {
         this.prenom = prenom;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

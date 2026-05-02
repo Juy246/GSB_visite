@@ -6,14 +6,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.gsb_visites.R;
+import com.example.gsb_visites.adapter.PortefeuilleAdapter;
 import com.example.gsb_visites.databinding.FragmentHomeVisiteurBinding;
 import com.example.gsb_visites.viewmodel.VisiteurViewModel;
+
+import java.util.ArrayList;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -33,6 +37,11 @@ public class HomeVisiteurFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Initialiser le RecyclerView
+        PortefeuilleAdapter portefeuilleAdapter = new PortefeuilleAdapter(new ArrayList<>());
+        binding.recyclerViewPraticien.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerViewPraticien.setAdapter(portefeuilleAdapter);
+
         VisiteurViewModel visiteurViewModel = new ViewModelProvider(requireActivity()).get(VisiteurViewModel.class);
         visiteurViewModel.getVisiteur().observe(getViewLifecycleOwner(), visiteur -> {
             if (visiteur != null) {
@@ -43,6 +52,16 @@ public class HomeVisiteurFragment extends Fragment {
                 binding.tvBonjour.setText(message);
                 String emailMessage = "Votre adresse e-mail : " + email;
                 binding.tvEmail.setText(emailMessage);
+
+                // Charger les portefeuilles actifs si l'ID existe
+                if (visiteur.getId() != null) {
+                    visiteurViewModel.getActivePortefeuilleByVisiteur(visiteur.getId())
+                        .observe(getViewLifecycleOwner(), portefeuilles -> {
+                            if (portefeuilles != null && !portefeuilles.isEmpty()) {
+                                portefeuilleAdapter.updateData(portefeuilles);
+                            }
+                        });
+                }
             }
         });
     }
